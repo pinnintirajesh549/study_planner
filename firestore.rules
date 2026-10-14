@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User profile: only the authenticated user can read or modify their profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Subjects collection: scoped to the authenticated user
+    match /subjects/{subjectId} {
+      allow read, write: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow delete, update: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Tasks collection: scoped to the authenticated user
+    match /tasks/{taskId} {
+      allow read, write: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow delete, update: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Exams collection: scoped to the authenticated user
+    match /exams/{examId} {
+      allow read, write: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow delete, update: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Study sessions collection: scoped to the authenticated user
+    match /study_sessions/{sessionId} {
+      allow read, write: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow delete, update: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Focus logs collection: scoped to the authenticated user
+    match /focus_logs/{logId} {
+      allow read, write: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow delete, update: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Notifications collection: scoped to the authenticated user
+    match /notifications/{notificationId} {
+      allow read, write: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow delete, update: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+  }
+}
